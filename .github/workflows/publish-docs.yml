@@ -1,5 +1,6 @@
 name: 'Build doc page'
 on:
+  pull_request:
   push:
     branches: [ master ]
     tags:
@@ -31,15 +32,10 @@ jobs:
       - name: Build docs
         run: |
           sphinx-multiversion docs doc_build/
-      - name: Add redirect to stable doc
-        run: |
-          cp assets/redirect.html doc_build/index.html
-          cp assets/redirect.html doc_build/404.html
-          cp assets/README.md doc_build/README.md
-          sed -i "s/\[VERSION\]/$(python -c 'import flair;print(flair.__version__)')/g" doc_build/index.html
-          sed -i "s/\[VERSION\]/$(python -c 'import flair;print(flair.__version__)')/g" doc_build/404.html
+      - name: Load CNAME
+        run: echo flair.qubitpi.org > doc_build/master/CNAME
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./doc_build
+          publish_dir: ./doc_build/master
