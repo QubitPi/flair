@@ -63,6 +63,9 @@ a pre-trained model and use it to predict tags for the sentence:
 from flair.data import Sentence
 from flair.nn import Classifier
 
+# load tagger - https://huggingface.co/flair/ner-english
+tagger = SequenceTagger.load("flair/ner-english")
+
 # make a sentence
 sentence = Sentence('I love Berlin .')
 
